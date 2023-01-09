@@ -1,14 +1,18 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
+import { useTranslation } from "react-i18next";
 
 function SparkChart({ data, pcolor }) {
   const ref = useRef();
 
+  const { t, i18n } = useTranslation();
   let keydata = data;
   let color = pcolor;
 
   useEffect(() => {
     const svgElement = d3.select(ref.current);
+
+    svgElement.selectAll("svg > *").remove();
 
     const WIDTH = 205;
     const HEIGHT = 30;
@@ -20,10 +24,17 @@ function SparkChart({ data, pcolor }) {
 
     let key = keydata;
 
+    let d1 = 0;
+    let d2 = DATA_COUNT;
+    if (i18n.language == "ar") {
+      d1 = DATA_COUNT;
+      d2 = 0;
+    }
+
     let min = Math.min(...key);
     let max = Math.max(...key);
     const data = d3.range([DATA_COUNT]).map((d) => key[d]);
-    const x = d3.scaleLinear().domain([0, DATA_COUNT]).range([0, INNER_WIDTH]);
+    const x = d3.scaleLinear().domain([d1, d2]).range([0, INNER_WIDTH]);
 
     const y = d3.scaleLinear().domain([min, max]).range([INNER_HEIGHT, 1]);
 

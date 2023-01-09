@@ -1,7 +1,10 @@
 import React from "react";
 import Metric from "./Metric";
+import { useTranslation } from "react-i18next";
 
 function TopBar() {
+  const { t } = useTranslation();
+
   let nas100 = [
     10956.14, 10985.45, 10822.51, 10679.34, 10951.05, 10939.76, 10862.64,
     10914.8, 10741.22, 11040.35,
@@ -25,25 +28,25 @@ function TopBar() {
     <>
       <div className="flex flex-wrap mx-3">
         <Metric
-          MetricName="Nasdaq 100"
+          MetricName={t("nasdaq")}
           MetricValue="11040.35"
           Change="2.78"
           dataset={nas100}
         />
         <Metric
-          MetricName="DJIA"
+          MetricName={t("djia")}
           MetricValue="33630.61"
           Change="2.13"
           dataset={djia}
         />
         <Metric
-          MetricName="Crude Oil"
+          MetricName={t("oil")}
           MetricValue="73.38"
           Change="-1.65"
           dataset={oil}
         />
         <Metric
-          MetricName="Gold"
+          MetricName={t("gold")}
           MetricValue="1,869.70"
           Change="1.58"
           dataset={gold}

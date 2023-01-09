@@ -1,13 +1,19 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
+import { useTranslation } from "react-i18next";
 
-function BarChart() {
+function BarChart({ render }) {
   const ref = useRef();
 
+  const { t, i18n } = useTranslation();
+
   useEffect(() => {
+    console.log("Updates");
     const svgElement = d3.select(ref.current);
 
-    svgElement.select("g").selectAll("*").remove();
+    console.log(i18n.language);
+
+    svgElement.selectAll("svg > *").remove();
     const width = 350;
     const height = 200;
 
@@ -18,7 +24,14 @@ function BarChart() {
     keydata.push({ year: 2013, price: 20.3 });
     keydata.push({ year: 2014, price: 30.4 });
 
-    var xScale = d3.scaleBand().range([0, width]).padding(0.4),
+    let d1 = 0;
+    let d2 = width;
+    if (i18n.language == "ar") {
+      d1 = width;
+      d2 = 0;
+    }
+
+    var xScale = d3.scaleBand().range([d1, d2]).padding(0.4),
       yScale = d3.scaleLinear().range([height, 0]);
 
     xScale.domain(
@@ -50,14 +63,19 @@ function BarChart() {
           .tickFormat(function (d) {
             return d;
           })
+          .tickPadding(i18n.language == "ar" ? 15 : 5)
           .ticks(10)
       )
+      .attr("saf", "asf")
       .append("text")
+      .attr("saf", "asf")
+      .attr("transform", "translate(-10,0)")
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("transform", "translate(10,0)")
-      .attr("text-anchor", "start")
       .text("value");
+
+    //g.selectAll("text").attr("transform", "translate(-10,0)");
 
     g.selectAll(".bar")
       .data(keydata)
@@ -86,8 +104,8 @@ function BarChart() {
       .attr("text-anchor", "start")
       .attr("stroke", "gray")
       .attr("fill", "gray")
-      .text("Year");
-  }, []);
+      .text(t("Year"));
+  }, [render]);
 
   return (
     <>
